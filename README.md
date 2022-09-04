@@ -42,11 +42,11 @@ Small Utilty to use with Multer as storage engine to optimise images on the fly 
 
 | Key              | Option                                              | Description                                           |
 | ---------------- | --------------------------------------------------- | ----------------------------------------------------- |
-| fileFormat       | `jpg / png/ webp 'Default:"jpg"`                    |                                                       |
+| fileFormat       | `jpg / png/ webp 'Default:"jpg"`                    | Output file type                                      |
 | resize           | `{height:"", widht:"",resizeMode:"" } 'Default:{}'` | If provided Images will be resized before saving      |
 | quality          | `Number(0-100) 'Default :80'`                       | Reduces the qulity for better performance             |
-| useTimestamp     | `true/false 'Default :false'`                       | Adds suffice to file name Ex: "Images_1653679779.jpg" |
-| watermarkOptions | `{input:"", location:"} 'Default:disabled'`         | Adds watermark on every Images before Saving          |
+| useTimestamp     | `true/false 'Default :false'`(optional)             | Adds suffice to file name Ex: "Images_1653679779.jpg" |
+| watermarkOptions | `{input:"", location:""} ` (optional)               | Adds watermark on every Images before Saving          |
 
 ### resizeMode
 
