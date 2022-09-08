@@ -33,7 +33,7 @@ const prepareSharpStream = (SharpStram, input) => {
   }
 };
 
-const handleWatermark = (SharpStram, input) => {
+const handleWatermark = async (SharpStram, input) => {
   let gravity = "";
   switch (input.location) {
     case "top-left":
@@ -49,19 +49,44 @@ const handleWatermark = (SharpStram, input) => {
       gravity = "southeast";
       break;
   }
-  console.log(input.location, gravity);
+  // preparing watermark with transparency
+  const opacity = input.opacity ? Number(input.opacity) * 2.55 : 255;
+  const watermarkStream = await sharp(input.input)
+    .composite([
+      {
+        input: Buffer.from([0, 0, 0, opacity]),
+        raw: {
+          width: 1,
+          height: 1,
+          channels: 4,
+        },
+        tile: true,
+        blend: "dest-in",
+      },
+    ])
+    .toFormat("png")
+    .toBuffer();
+
   return SharpStram.composite([
-    { input: input.input, gravity: gravity || "center" },
+    { input: watermarkStream, gravity: gravity || "center", blend: "atop" },
   ]);
 };
 
-const handleSave = (req, file, cb, imageOptions, path, watermarkOptions) => {
+const handleSave = async (
+  req,
+  file,
+  cb,
+  imageOptions,
+  path,
+  watermarkOptions
+) => {
   let stream = sharp();
 
   // preparing harp functions based on inputs
 
   // checking if watermark is provided or not
-  if (watermarkOptions) stream = handleWatermark(stream, watermarkOptions);
+  if (watermarkOptions)
+    stream = await handleWatermark(stream, watermarkOptions);
 
   let filename = getFilename(file.originalname, imageOptions);
   //handling image Options
