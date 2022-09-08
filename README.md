@@ -46,7 +46,8 @@ Small Utilty to use with Multer as storage engine to optimise images on the fly 
 | resize           | `{height:"", widht:"",resizeMode:"" } 'Default:{}'` | If provided Images will be resized before saving      |
 | quality          | `Number(0-100) 'Default :80'`                       | Reduces the qulity for better performance             |
 | useTimestamp     | `true/false 'Default :false'`(optional)             | Adds suffice to file name Ex: "Images_1653679779.jpg" |
-| watermarkOptions | `{input:"", location:""} ` (optional)               | Adds watermark on every Images before Saving          |
+| watermarkOptions | `{input:"", location:"",opacity:1-100} ` (optional)               | Adds watermark on every Images before Saving          |
+
 
 ### resizeMode
 
