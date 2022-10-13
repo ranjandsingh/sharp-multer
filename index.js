@@ -7,7 +7,7 @@ const getDestination = (req, file, cb) => {
 
 const getFilename = (name, input) =>
   name.split(".").slice(0, -1).join(".") +
-  `${input.useTimestamp ? "_" + Date.getUnixTime() : ""}` +
+  `${input.useTimestamp ? "-" + Date.now() : ""}` +
   "." +
   input.fileFormat;
 
