@@ -1,6 +1,6 @@
 {
   "name": "sharp-multer",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "description": "Multer Engine for Image Optimisation using Sharp",
   "main": "index.js",
   "scripts": {
@@ -11,16 +11,19 @@
     "url": "git+https://github.com/ranjandsingh/sharp-multer.git"
   },
   "keywords": [
+    "sharp multer",
     "sharp",
     "Multer",
-    "sharp-multer"
+    "sharp-multer",
+    "multer sharp",
+    "sharp mutler"
   ],
   "author": "Ranjan Kumar Singh",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ranjandsingh/sharp-mutler/issues"
+    "url": "https://github.com/ranjandsingh/sharp-multer/issues"
   },
-  "homepage": "https://github.com/ranjandsingh/sharp-mutler#readme",
+  "homepage": "https://github.com/ranjandsingh/sharp-multer#readme",
   "dependencies": {
     "sharp": "^0.30.5"
   }
