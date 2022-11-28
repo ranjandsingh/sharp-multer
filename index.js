@@ -92,17 +92,16 @@ const handleSave = async (
   //handling image Options
   stream = prepareSharpStream(stream, imageOptions);
 
-  stream
+  await stream
     .toFile(path + "/" + filename, function (err) {
       if (err) console.log(err);
-    })
-    .on("finish", function () {
       console.log("done");
       cb(null, {
         filename: filename,
         path: path + "/" + filename,
       });
     });
+
   // finally
   file.stream.pipe(stream);
 };
