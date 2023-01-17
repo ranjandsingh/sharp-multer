@@ -81,8 +81,10 @@ const handleSave = async (
   watermarkOptions
 ) => {
   let stream = sharp();
+  file.stream.pipe(stream);
+  await stream.withMetadata();
 
-  // preparing harp functions based on inputs
+  // preparing sharp functions based on inputs
 
   // checking if watermark is provided or not
   if (watermarkOptions)
@@ -92,18 +94,15 @@ const handleSave = async (
   //handling image Options
   stream = prepareSharpStream(stream, imageOptions);
 
-  await stream
-    .toFile(path + "/" + filename, function (err) {
-      if (err) console.log(err);
-      console.log("done");
-      cb(null, {
-        filename: filename,
-        path: path + "/" + filename,
-      });
-    });
-
   // finally
-  file.stream.pipe(stream);
+  await stream.withMetadata().toFile(path + "/" + filename, function (err) {
+    if (err) console.log(err);
+    console.log("done");
+    cb(null, {
+      filename: filename,
+      path: path + "/" + filename,
+    });
+  });
 };
 
 function MyCustomStorage(options) {
