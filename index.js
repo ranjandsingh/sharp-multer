@@ -95,7 +95,6 @@ const handleSave = async (
 
   await stream.toFile(path + "/" + filename, function (err) {
     if (err) console.log(err);
-    console.log("done");
     cb(null, {
       filename: filename,
       path: path + "/" + filename,
