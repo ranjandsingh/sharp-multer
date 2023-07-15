@@ -38,7 +38,7 @@ Small Utilty to use with Multer as storage engine to optimise images on the fly 
         input:  "./images/logo.png",
         location:  "top-right",
         },
-    filename:newFilenameFunction,
+    filename:newFilenameFunction, // optional
     });
     const  upload  =  multer({ storage })
     app.post("/upload", upload.single("avatar"),  async  (req,  res)  =>  {
