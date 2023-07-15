@@ -79,7 +79,7 @@ const handleSave = async (
   imageOptions,
   path,
   watermarkOptions,
-  getFilename = getFilenameDefault
+  filename
 ) => {
   let stream = sharp();
 
@@ -89,7 +89,6 @@ const handleSave = async (
   if (watermarkOptions)
     stream = await handleWatermark(stream, watermarkOptions);
 
-  let filename = getFilename(file.originalname, imageOptions);
   //handling image Options
   stream = prepareSharpStream(stream, imageOptions);
 
@@ -116,17 +115,10 @@ function MyCustomStorage(options) {
 MyCustomStorage.prototype._handleFile = function _handleFile(req, file, cb) {
   const imageOptions = this.imageOptions;
   const watermarkOptions = this.watermarkOptions;
+  const filename = this.getFilename(file.originalname, imageOptions);
   this.getDestination(req, file, function (err, path) {
     if (err) return cb(err);
-    handleSave(
-      req,
-      file,
-      cb,
-      imageOptions,
-      path,
-      watermarkOptions,
-      this.getFilename
-    );
+    handleSave(req, file, cb, imageOptions, path, watermarkOptions, filename);
   });
 };
 

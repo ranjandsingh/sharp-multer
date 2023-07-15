@@ -1,6 +1,6 @@
 {
   "name": "sharp-multer",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "description": "Multer Engine for Image Optimisation using Sharp",
   "main": "index.js",
   "scripts": {
