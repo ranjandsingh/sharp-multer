@@ -5,7 +5,7 @@ const getDestination = (req, file, cb) => {
   cb(null, "/dev/null");
 };
 
-const getFilename = (name, input) =>
+const getFilenameDefault = (name, input) =>
   name.split(".").slice(0, -1).join(".") +
   `${input.useTimestamp ? "-" + Date.now() : ""}` +
   "." +
@@ -78,7 +78,8 @@ const handleSave = async (
   cb,
   imageOptions,
   path,
-  watermarkOptions
+  watermarkOptions,
+  getFilename = getFilenameDefault
 ) => {
   let stream = sharp();
 
@@ -92,15 +93,13 @@ const handleSave = async (
   //handling image Options
   stream = prepareSharpStream(stream, imageOptions);
 
-  await stream
-    .toFile(path + "/" + filename, function (err) {
-      if (err) console.log(err);
-      console.log("done");
-      cb(null, {
-        filename: filename,
-        path: path + "/" + filename,
-      });
+  await stream.toFile(path + "/" + filename, function (err) {
+    if (err) console.log(err);
+    cb(null, {
+      filename: filename,
+      path: path + "/" + filename,
     });
+  });
 
   // finally
   file.stream.pipe(stream);
@@ -111,6 +110,7 @@ function MyCustomStorage(options) {
   this.imageOptions = options.imageOptions ||
     options.sharpOptions || { fileFormat: "jpg", quality: 80 };
   this.watermarkOptions = options.watermarkOptions;
+  this.getFilename = options.filename || getFilenameDefault;
 }
 
 MyCustomStorage.prototype._handleFile = function _handleFile(req, file, cb) {
@@ -118,7 +118,15 @@ MyCustomStorage.prototype._handleFile = function _handleFile(req, file, cb) {
   const watermarkOptions = this.watermarkOptions;
   this.getDestination(req, file, function (err, path) {
     if (err) return cb(err);
-    handleSave(req, file, cb, imageOptions, path, watermarkOptions);
+    handleSave(
+      req,
+      file,
+      cb,
+      imageOptions,
+      path,
+      watermarkOptions,
+      this.getFilename
+    );
   });
 };
 

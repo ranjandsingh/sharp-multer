@@ -14,6 +14,17 @@ Small Utilty to use with Multer as storage engine to optimise images on the fly 
     const SharpMulter = require("sharp-multer");
     const  app  =  express();
 
+
+    // optional function to return new File Name
+    const newFilenameFunction = (og_filename, options) => {
+    const newname =
+        og_filename.split(".").slice(0, -1).join(".") +
+        `${options.useTimestamp ? "-" + Date.now() : ""}` +
+        "." +
+        options.fileFormat;
+    return newname;
+    };
+
     const  storage  =  SharpMulter({
     destination:  (req,  file,  callback)  =>  callback(null,  "images"),
 
@@ -27,6 +38,7 @@ Small Utilty to use with Multer as storage engine to optimise images on the fly 
         input:  "./images/logo.png",
         location:  "top-right",
         },
+    filename:newFilenameFunction, // optional
     });
     const  upload  =  multer({ storage })
     app.post("/upload", upload.single("avatar"),  async  (req,  res)  =>  {
@@ -40,14 +52,14 @@ Small Utilty to use with Multer as storage engine to optimise images on the fly 
 
 ## Image Options
 
-| Key              | Option                                              | Description                                           |
-| ---------------- | --------------------------------------------------- | ----------------------------------------------------- |
-| fileFormat       | `jpg / png/ webp 'Default:"jpg"`                    | Output file type                                      |
-| resize           | `{height:"", widht:"",resizeMode:"" } 'Default:{}'` | If provided Images will be resized before saving      |
-| quality          | `Number(0-100) 'Default :80'`                       | Reduces the qulity for better performance             |
-| useTimestamp     | `true/false 'Default :false'`(optional)             | Adds suffice to file name Ex: "Images_1653679779.jpg" |
-| watermarkOptions | `{input:"", location:"",opacity:1-100} ` (optional)               | Adds watermark on every Images before Saving          |
-
+| Key              | Option                                                 | Description                                                                                                                                                        |
+| ---------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| fileFormat       | `jpg / png/ webp 'Default:"jpg"`                       | Output file type                                                                                                                                                   |
+| resize           | `{height:"", widht:"",resizeMode:"" } 'Default:{}'`    | If provided Images will be resized before saving                                                                                                                   |
+| quality          | `Number(0-100) 'Default :80'`                          | Reduces the qulity for better performance                                                                                                                          |
+| useTimestamp     | `true/false 'Default :false'`(optional)                | Adds suffice to file name Ex: "Images_1653679779.jpg"                                                                                                              |
+| watermarkOptions | `{input:"", location:"",opacity:1-100} ` (optional)    | Adds watermark on every Images before Saving                                                                                                                       |
+| filename         | `(originalname,options) => return newname ` (optional) | Option to return a new name for saving file it will give you original name as first argument you must return a string with filename and extension like "image.png" |
 
 ### resizeMode
 
@@ -64,6 +76,22 @@ Small Utilty to use with Multer as storage engine to optimise images on the fly 
 > watermarkOptions.location
 
 watermarkOptions supports total 5 locations : `"center","top-left","top-right","bottom-left","bottom-right" `
+
+### filename
+
+Option to return a new name for saving file it will give you original name as first argument you must return a string with filename and extension like "image.png"
+ex:
+
+```js
+const newFilenameFunction = (og_filename, options) => {
+  const newname =
+    og_filename.split(".").slice(0, -1).join(".") +
+    `${options.useTimestamp ? "-" + Date.now() : ""}` +
+    "." +
+    options.fileFormat;
+  return newname;
+};
+```
 
 Feel free to open a Issue for features or bug fixes
 
