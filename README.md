@@ -1,6 +1,6 @@
 # Sharp-Multer
 
-Small Utilty to use with Multer as storage engine to optimise images on the fly It uses Sharp to optimise images to jpg, png, webp as well as resize them.
+Small Utility to use with Multer as storage engine to optimize images on the fly It uses Sharp to optimize images to jpg, png, webp as well as resize them.
 
 ## Install
 
@@ -8,46 +8,43 @@ Small Utilty to use with Multer as storage engine to optimise images on the fly 
 
 ## Example
 
-```
-    const multer = require("multer");
+```js
+const multer = require("multer");
 
-    const SharpMulter = require("sharp-multer");
-    const  app  =  express();
+const SharpMulter = require("sharp-multer");
+const app = express();
 
+// optional function to return new File Name
+const newFilenameFunction = (og_filename, options) => {
+  const newname =
+    og_filename.split(".").slice(0, -1).join(".") +
+    `${options.useTimestamp ? "-" + Date.now() : ""}` +
+    "." +
+    options.fileFormat;
+  return newname;
+};
 
-    // optional function to return new File Name
-    const newFilenameFunction = (og_filename, options) => {
-    const newname =
-        og_filename.split(".").slice(0, -1).join(".") +
-        `${options.useTimestamp ? "-" + Date.now() : ""}` +
-        "." +
-        options.fileFormat;
-    return newname;
-    };
+const storage = SharpMulter({
+  destination: (req, file, callback) => callback(null, "images"),
 
-    const  storage  =  SharpMulter({
-    destination:  (req,  file,  callback)  =>  callback(null,  "images"),
+  imageOptions: {
+    fileFormat: "png",
+    quality: 80,
+    resize: { width: 500, height: 500, resizeMode: "contain" },
+  },
 
-    imageOptions:  {
-        fileFormat:  "png",
-        quality:  80,
-        resize:  { width:  500, height:  500, resizeMode:  "contain"  },
-        },
+  watermarkOptions: {
+    input: "./images/logo.png",
+    location: "top-right",
+  },
+  filename: newFilenameFunction, // optional
+});
+const upload = multer({ storage });
+app.post("/upload", upload.single("avatar"), async (req, res) => {
+  console.log(req.file);
 
-    watermarkOptions:  {
-        input:  "./images/logo.png",
-        location:  "top-right",
-        },
-    filename:newFilenameFunction, // optional
-    });
-    const  upload  =  multer({ storage })
-    app.post("/upload", upload.single("avatar"),  async  (req,  res)  =>  {
-
-    console.log(req.file);
-
-    return res.json("File Uploaded Successfully!");
-
-    });
+  return res.json("File Uploaded Successfully!");
+});
 ```
 
 ## Image Options
