@@ -101,6 +101,8 @@ const newFilenameFunction = (og_filename, options, req) => {
 };
 ```
 
+Note that any other field present in the request body will work.
+
 Feel free to open a Issue for features or bug fixes
 
 Thanks
