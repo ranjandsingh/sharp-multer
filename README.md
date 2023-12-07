@@ -93,7 +93,7 @@ const newFilenameFunction = (og_filename, options) => {
 };
 ```
 
-If you want to use a request field to generate the filename, you can do it like this:
+If you want to use a request field called `metadata` passed in the body to generate the filename, you can do it like this:
 
 ```js
 const newFilenameFunction = (og_filename, options, req) => {
