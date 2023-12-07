@@ -115,7 +115,7 @@ function MyCustomStorage(options) {
 MyCustomStorage.prototype._handleFile = function _handleFile(req, file, cb) {
   const imageOptions = this.imageOptions;
   const watermarkOptions = this.watermarkOptions;
-  const filename = this.getFilename(file.originalname, imageOptions);
+  const filename = this.getFilename(file.originalname, imageOptions, req);
   this.getDestination(req, file, function (err, path) {
     if (err) return cb(err);
     handleSave(req, file, cb, imageOptions, path, watermarkOptions, filename);

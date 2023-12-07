@@ -52,14 +52,14 @@ Small Utilty to use with Multer as storage engine to optimise images on the fly 
 
 ## Image Options
 
-| Key              | Option                                                 | Description                                                                                                                                                        |
-| ---------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| fileFormat       | `jpg / png/ webp 'Default:"jpg"`                       | Output file type                                                                                                                                                   |
-| resize           | `{height:"", widht:"",resizeMode:"" } 'Default:{}'`    | If provided Images will be resized before saving                                                                                                                   |
-| quality          | `Number(0-100) 'Default :80'`                          | Reduces the qulity for better performance                                                                                                                          |
-| useTimestamp     | `true/false 'Default :false'`(optional)                | Adds suffice to file name Ex: "Images_1653679779.jpg"                                                                                                              |
-| watermarkOptions | `{input:"", location:"",opacity:1-100} ` (optional)    | Adds watermark on every Images before Saving                                                                                                                       |
-| filename         | `(originalname,options) => return newname ` (optional) | Option to return a new name for saving file it will give you original name as first argument you must return a string with filename and extension like "image.png" |
+| Key              | Option                                                     | Description                                                                                                                                                        |
+| ---------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| fileFormat       | `jpg / png/ webp 'Default:"jpg"`                           | Output file type                                                                                                                                                   |
+| resize           | `{height:"", widht:"",resizeMode:"" } 'Default:{}'`        | If provided Images will be resized before saving                                                                                                                   |
+| quality          | `Number(0-100) 'Default :80'`                              | Reduces the qulity for better performance                                                                                                                          |
+| useTimestamp     | `true/false 'Default :false'`(optional)                    | Adds suffice to file name Ex: "Images_1653679779.jpg"                                                                                                              |
+| watermarkOptions | `{input:"", location:"",opacity:1-100} ` (optional)        | Adds watermark on every Images before Saving                                                                                                                       |
+| filename         | `(originalname,options,req) => return newname ` (optional) | Option to return a new name for saving file it will give you original name as first argument you must return a string with filename and extension like "image.png" |
 
 ### resizeMode
 
@@ -92,6 +92,16 @@ const newFilenameFunction = (og_filename, options) => {
   return newname;
 };
 ```
+
+If you want to use a request field called `metadata` passed in the body to generate the filename, you can do it like this:
+
+```js
+const newFilenameFunction = (og_filename, options, req) => {
+  return `${og_filename}_${req.body.metadata}` + options.fileFormat;
+};
+```
+
+Note that any other field present in the request body will work.
 
 Feel free to open a Issue for features or bug fixes
 
