@@ -97,7 +97,7 @@ If you want to use a request field called `metadata` passed in the body to gener
 
 ```js
 const newFilenameFunction = (og_filename, options, req) => {
-  return `${og_filename}_${req.body.metadata}` + options.fileFormat;
+  return `${og_filename}_${req.body.metadata}.${options.fileFormat}`;
 };
 ```
 
