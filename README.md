@@ -52,11 +52,11 @@ app.post("/upload", upload.single("avatar"), async (req, res) => {
 | Key              | Option                                                     | Description                                                                                                                                                        |
 | ---------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | fileFormat       | `jpg / png/ webp 'Default:"jpg"`                           | Output file type                                                                                                                                                   |
-| resize           | `{height:"", widht:"",resizeMode:"" } 'Default:{}'`        | If provided Images will be resized before saving                                                                                                                   |
+| resize           | `{height:"", widht:"",resizeMode:"", withoutEnlargement: true/false } 'Default:{}'`        | If provided Images will be resized before saving                                                                                                                  |
 | quality          | `Number(0-100) 'Default :80'`                              | Reduces the qulity for better performance                                                                                                                          |
 | useTimestamp     | `true/false 'Default :false'`(optional)                    | Adds suffice to file name Ex: "Images_1653679779.jpg"                                                                                                              |
-| watermarkOptions | `{input:"", location:"",opacity:1-100} ` (optional)        | Adds watermark on every Images before Saving                                                                                                                       |
-| filename         | `(originalname,options,req) => return newname ` (optional) | Option to return a new name for saving file it will give you original name as first argument you must return a string with filename and extension like "image.png" |
+| watermarkOptions | `{input:"", location:"",opacity:1-100}` (optional)        | Adds watermark on every Images before Saving                                                                                                                       |
+| filename         | `(originalname,options,req) => return newname` (optional) | Option to return a new name for saving file it will give you original name as first argument you must return a string with filename and extension like "image.png" |
 
 ### resizeMode
 
@@ -68,11 +68,17 @@ app.post("/upload", upload.single("avatar"), async (req, res) => {
 - `inside`: Preserving aspect ratio, resize the image to be as large as possible while ensuring its dimensions are less than or equal to both those specified. _i.e width will be fixed to max value you provide and height will be adjusted to a lower value than provided according to Aspect Ratio_ .
 - `outside`: Preserving aspect ratio, resize the image to be as small as possible while ensuring its dimensions are greater than or equal to both those specified. _i.e height will be fixed to value you provide and width will be adjusted to a higher value than provided according to Aspect Ratio_
 
+### withoutEnlargement
+
+> resize.withoutEnlargement
+
+If ```withoutEnlargement``` is true, image to be resized is smaller than selected size, resize operation will not be performed.
+
 ### location
 
 > watermarkOptions.location
 
-watermarkOptions supports total 5 locations : `"center","top-left","top-right","bottom-left","bottom-right" `
+watermarkOptions supports total 5 locations : `"center","top-left","top-right","bottom-left","bottom-right"`
 
 ### filename
 

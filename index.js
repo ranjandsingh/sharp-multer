@@ -13,11 +13,12 @@ const getFilenameDefault = (name, input) =>
 
 const prepareSharpStream = (SharpStram, input) => {
   if (input.resize) {
-    const { width, height, resizeMode } = input.resize;
+    const { width, height, resizeMode, withoutEnlargement } = input.resize;
     SharpStram.resize({
       width,
       height,
       fit: resizeMode,
+      withoutEnlargement
     });
   }
 
